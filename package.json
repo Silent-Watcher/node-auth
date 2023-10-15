@@ -8,7 +8,8 @@
 	"main": "server.js",
 	"scripts": {
 		"dev:new": "node --watch server",
-		"dev": "nodemon server"
+		"dev": "nodemon server",
+		"start" : "node server"
 	},
 	"keywords": [],
 	"author": "",
