@@ -5,6 +5,9 @@ const expressEjsLayouts = require("express-ejs-layouts");
 const path = require("node:path");
 const flash = require("express-flash");
 const session = require("express-session");
+const passport = require("passport");
+const {passportInit} =require('./config/passport.config');
+
 
 const router = require("./routes/router");
 const notFoundErrorHandler = require("./middlewares/global/notFoundErrorHandler.middleware");
@@ -38,7 +41,13 @@ app.use(
 app.set("view engine", "ejs");
 app.set("layout", LAYOUT_PATH);
 
-app.use(router);
+
+passportInit(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use(router(passport));
 
 app.use(notFoundErrorHandler);
 app.use(errorHandler);

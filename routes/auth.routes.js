@@ -2,18 +2,23 @@
 const { Router } = require("express");
 const { hashPassword } = require("../utils/auth.utils");
 const userModel = require("../models/user.model");
+const {
+	redirectAuthenticated,
+	checkAuth,
+} = require("../middlewares/checkAuth.middleware");
+const passport = require("passport");
 
 const authRouter = Router();
 
-authRouter.get("/login", (req, res) => {
+authRouter.get("/login", redirectAuthenticated, (req, res) => {
 	res.render("login");
 });
 
-authRouter.get("/register", (req, res) => {
+authRouter.get("/register", redirectAuthenticated, (req, res) => {
 	res.render("register");
 });
 
-authRouter.post("/register", async (req, res, next) => {
+authRouter.post("/register", redirectAuthenticated, async (req, res, next) => {
 	try {
 		let { password, username, fullname: fullName } = req.body;
 		let user = await userModel.findOne({ username });
@@ -22,16 +27,35 @@ authRouter.post("/register", async (req, res, next) => {
 			req.flash("error", "this username is already exists");
 			return res.redirect(referrer);
 		}
-		password = hashPassword(password);
 		let newUser = await userModel.create({
 			fullName,
 			username,
-			password,
+			password: hashPassword(password),
 		});
 		res.redirect("/auth/login");
 	} catch (error) {
 		next(error);
 	}
+});
+
+authRouter.post(
+	"/login",
+	redirectAuthenticated,
+	passport.authenticate("local", {
+		successRedirect: "/profile",
+		failureRedirect: "/login",
+		failureFlash: true,
+	}),
+	async (req, res, next) => {
+		res.redirect("/profile");
+	}
+);
+
+authRouter.get("/logout", checkAuth, (req, res) => {
+	req.logOut({ keepSessionInfo: false }, (error) => {
+		if (error) throw new Error(error);
+	});
+	res.redirect("/");
 });
 
 module.exports = authRouter;
