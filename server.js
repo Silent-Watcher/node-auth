@@ -1,3 +1,4 @@
+'use strict';
 const express = require("express");
 const { env } = require("node:process");
 const expressEjsLayouts = require("express-ejs-layouts");
@@ -6,6 +7,7 @@ const flash = require("express-flash");
 const session = require("express-session");
 
 const router = require("./routes/router");
+const notFoundErrorHandler = require("./middlewares/global/notFoundErrorHandler.middleware");
 
 require("./config/env.config");
 require("./config/mongoose.config");
@@ -36,5 +38,8 @@ app.set("view engine", "ejs");
 app.set("layout", LAYOUT_PATH);
 
 app.use(router);
+
+
+app.use(notFoundErrorHandler);
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
