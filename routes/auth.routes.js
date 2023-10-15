@@ -13,15 +13,22 @@ authRouter.get("/register", (req, res) => {
 	res.render("register");
 });
 
-authRouter.post("/register", async (req, res) => {
+authRouter.post("/register", async (req, res, next) => {
 	try {
-		let { password, username, fullName } = req.body;
+		let { password, username, fullname: fullName } = req.body;
+		let user = await userModel.findOne({ username });
+		if (user) {
+			let referrer = req.headers.referer;
+			req.flash("error", "this username is already exists");
+			return res.redirect(referrer);
+		}
 		password = hashPassword(password);
-		let user = await userModel.create({
+		let newUser = await userModel.create({
 			fullName,
 			username,
 			password,
 		});
+		res.redirect("/auth/login");
 	} catch (error) {
 		next(error);
 	}
