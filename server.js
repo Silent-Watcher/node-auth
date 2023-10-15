@@ -4,6 +4,7 @@ const expressEjsLayouts = require("express-ejs-layouts");
 const path = require("node:path");
 
 require("./config/env.config");
+require("./config/mongoose.config");
 
 const app = express();
 const PORT = env.PORT;

@@ -7,7 +7,8 @@
 	"description": "a template repository",
 	"main": "server.js",
 	"scripts": {
-		"start": "node --watch server"
+		"dev:new": "node --watch server",
+		"dev": "nodemon server"
 	},
 	"keywords": [],
 	"author": "",
@@ -17,6 +18,7 @@
 		"ejs": "^3.1.9",
 		"express": "^4.18.2",
 		"express-ejs-layouts": "^2.5.1",
-		"mongoose": "^7.6.2"
+		"mongoose": "^7.6.2",
+		"nodemon": "^3.0.1"
 	}
 }
