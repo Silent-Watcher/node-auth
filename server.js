@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 const express = require("express");
 const { env } = require("node:process");
 const expressEjsLayouts = require("express-ejs-layouts");
@@ -8,6 +8,7 @@ const session = require("express-session");
 
 const router = require("./routes/router");
 const notFoundErrorHandler = require("./middlewares/global/notFoundErrorHandler.middleware");
+const errorHandler = require("./middlewares/global/errorHandler.middleware");
 
 require("./config/env.config");
 require("./config/mongoose.config");
@@ -39,7 +40,7 @@ app.set("layout", LAYOUT_PATH);
 
 app.use(router);
 
-
 app.use(notFoundErrorHandler);
+app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
