@@ -12,6 +12,12 @@ const LAYOUT_PATH = path.join(__dirname, "views", "layouts", "main.ejs");
 
 app.use(express.json(), express.urlencoded({ extended: true }));
 app.use(expressEjsLayouts);
+app.use((req, res, next) => {
+	res.locals = {
+		title: 'auth',
+	};
+	next();
+});
 
 app.set("view engine", "ejs");
 app.set("layout", LAYOUT_PATH);
