@@ -2,6 +2,10 @@ const express = require("express");
 const { env } = require("node:process");
 const expressEjsLayouts = require("express-ejs-layouts");
 const path = require("node:path");
+const flash = require("express-flash");
+const session = require("express-session");
+
+const router = require("./routes/router");
 
 require("./config/env.config");
 require("./config/mongoose.config");
@@ -14,16 +18,23 @@ app.use(express.json(), express.urlencoded({ extended: true }));
 app.use(expressEjsLayouts);
 app.use((req, res, next) => {
 	res.locals = {
-		title: 'auth',
+		title: "auth",
 	};
 	next();
 });
 
+app.use(flash());
+app.use(
+	session({
+		secret: "a secret",
+		saveUninitialized: false,
+		resave: false,
+	})
+);
+
 app.set("view engine", "ejs");
 app.set("layout", LAYOUT_PATH);
 
-app.get("/", (req, res) => {
-	res.render("index");
-});
+app.use(router);
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
