@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const { env } = require("node:process");
 
-const DB_NAME = "auth";
-const DB_URL = `mongodb://127.0.0.1:27017/${DB_NAME}`;
+const DB_URL = `${env.DB_URL}/${env.DB_NAME}`;
 
 mongoose.set("strictQuery", true);
 
