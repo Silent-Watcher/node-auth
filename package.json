@@ -1,0 +1,22 @@
+{
+	"name": "auth",
+	"version": "0.0.0",
+	"engines": {
+		"node": "v20.7.0"
+	},
+	"description": "a template repository",
+	"main": "server.js",
+	"scripts": {
+		"start": "node --watch server"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.3.1",
+		"ejs": "^3.1.9",
+		"express": "^4.18.2",
+		"express-ejs-layouts": "^2.5.1",
+		"mongoose": "^7.6.2"
+	}
+}
